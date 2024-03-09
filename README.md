@@ -1,6 +1,6 @@
 # Python script to test Simtelic USB to LCD module
 
-This repository contains a Python script (`lcdtest.py`) that allows you to communicate with LCD displays connected to your computer via a USB-to-LCD adapter.
+This repository contains a Python script (`lcdtest.py`) that allows you to communicate with LCD displays connected to your computer via a Simtelic USB to LCD adapter.
 
 ## Requirements
 - Python 3 (https://www.python.org/downloads/)
@@ -41,5 +41,5 @@ python3 lcdtest.py /dev/ttyACM0  # Replace with your actual serial port
 
 ## Additional Notes
 
-- Ensure the USB-to-LCD adapter is properly connected to your computer and the LCD display before running the script.
+- Ensure the Simtelic USB to LCD adapter is properly connected to your computer and the LCD display before running the script.
 - This README provides a basic usage guide. More advanced use cases might require additional configuration or code modifications.
