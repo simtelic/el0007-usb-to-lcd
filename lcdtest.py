@@ -7,21 +7,48 @@
 
 import sys
 import time
-import termios
 import select
 import serial
+
+if sys.platform == 'win32':
+    import threading
+    import msvcrt
+else:
+    import termios
 
 
 def wait_fro_keypress_with_timeout(timeout=5):
     print("   Press any key to start the next test or wait for 10 seconds...")
-    select.select([sys.stdin], [], [], timeout)
-    termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+    if sys.platform == 'win32':
+        class KeyboardThread(threading.Thread):
+            def __init__(self):
+                self.timeout = False
+                super().__init__()
+
+            def run(self):
+                while True:
+                    if msvcrt.kbhit():
+                        if ord(msvcrt.getche()) == 13:
+                            break
+                    if self.timeout:
+                        break
+                        
+        kb_thread = KeyboardThread()
+        kb_thread.start()
+        kb_thread.join(timeout)
+        kb_thread.timeout = True
+    else:
+        select.select([sys.stdin], [], [], timeout)
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print("Usage: lcdtest PORT")
-        print("  e.g: lcdtest /dev/ttyACM0")
+        if sys.platform == 'win32':
+            print("  e.g: lcdtest COM3")
+        else:
+            print("  e.g: lcdtest /dev/ttyACM0")
         exit(1)
 
 # Create serial connection on specified port with baud rate of 57600 and 8N1 configuration.
